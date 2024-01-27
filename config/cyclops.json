@@ -1,0 +1,62 @@
+{
+  "base_image": "ghcr.io/ublue-os/silverblue-nvidia",
+  "base_image_tag": "39-current",
+  "description": "A desktop image derived from Fedora Silverblue with the latest Nvidia drivers.",
+  "appimages": [
+    {
+      "name": "mediaelch",
+      "source": "Komet/MediaElch"
+    },
+    {
+      "name": "tuta",
+      "source": "tutao/tutanota",
+      "pattern": "Desktop"
+    },
+    {
+      "name": "bitwarden",
+      "source": "bitwarden/clients",
+      "pattern": "Desktop"
+    }
+  ],
+  "flatpaks": [
+    "com.google.AndroidStudio",
+    "org.gnome.Boxes",
+    "com.brave.Browser",
+    "com.discordapp.Discord",
+    "org.mozilla.firefox",
+    "org.keepassxc.KeePassXC",
+    "org.libreoffice.LibreOffice",
+    "com.makemkv.MakeMKV",
+    "org.bunkus.mkvtoolnix-gui",
+    "org.openrgb.OpenRGB",
+    "org.freedesktop.Piper",
+    "com.spotify.Client",
+    "com.valvesoftware.Steam",
+    "org.gimp.GIMP",
+    "org.videolan.VLC"
+  ],
+  "github_releases": [
+    {
+      "project": "twpayne/chezmoi",
+      "arch": "x86_64"
+    }
+  ],
+  "packages": {
+    "install": [
+      "bash-color-prompt",
+      "code",
+      "fira-code-fonts",
+      "fuse-sshfs",
+      "gvfs-nfs",
+      "input-remapper",
+      "steam-devices",
+      "tmux"
+    ],
+    "remove": [
+      "firefox",
+      "firefox-langpacks",
+      "gnome-software-rpm-ostree",
+      "gnome-tour"
+    ]
+  }
+}

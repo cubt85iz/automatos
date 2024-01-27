@@ -1,0 +1,148 @@
+name: build
+on:
+  # schedule:
+  #   - cron: "45 00 * * *"
+  # push:
+  #   branches:
+  #     - main
+  #   paths-ignore:
+  #     - "**.md"
+  workflow_dispatch:
+
+env:
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+
+jobs:
+  config_files:
+    name: Generate Build Environments
+    runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.config.outputs.files }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find config files
+        id: config
+        run: |
+          pushd config
+          echo "files=$(ls | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+          popd
+      - run: |
+          echo "${{ steps.config.outputs.files }}"
+
+  build:
+    name: Build and push image
+    runs-on: ubuntu-22.04
+    if: always() && !cancelled()
+    needs: [config_files]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        image_name:
+          - automatos
+        configuration: ${{ fromJSON(needs.config_files.outputs.files) }}
+    steps:
+      - name: Checkout Push to Registry action
+        uses: actions/checkout@v4
+
+      - name: Setup environment variables
+        id: setup-env-vars
+        shell: bash
+        run: |
+          echo "BASE_IMAGE=$(jq -r '.base_image' ${{ matrix.configuration }})" >> $GITHUB_ENV
+          echo "BASE_IMAGE_TAG=$(jq -r '.base_image_tag' ${{ matrix.configuration }})" >> $GITHUB_ENV
+          echo "DESCRIPTION=$(jq -r '.description' ${{ matrix.configuration }})" >> $GITHUB_ENV
+          CONFIG=${{ matrix.configuration }}
+          echo "MACHINE=${CONFIG%%.*}" >> $GITHUB_ENV
+
+      - name: Generate image tags
+        id: generate-image-tags
+        shell: bash
+        run: |
+          TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+          BUILD_TAGS=( "latest" "${TIMESTAMP}" "$(echo ${TIMESTAMP} | cut -d '-' -f 1)")
+          echo "alias_tags=${BUILD_TAGS[*]}" >> $GITHUB_OUTPUT
+
+      - name: Define Image Metadata
+        id: define-image-metadata
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ matrix.image_name }}-${{ env.MACHINE }}
+          labels: |
+            io.artifacthub.package.readme-url=https://raw.githubusercontent.com/cubt85iz/${{ matrix.image_name }}/main/README.md
+            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.title=${{ matrix.image_name }}-${{ env.MACHINE }}
+            org.opencontainers.image.version=${{ env.TIMESTAMP }}
+
+      - name: Build Image
+        id: build_image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          containerfiles: |
+            ./Containerfile
+          context: ./
+          image: ${{ matrix.image_name }}-${{ env.MACHINE }}
+          tags: |
+            ${{ steps.generate-image-tags.outputs.alias_tags }}
+          build-args: |
+            - BASE_IMAGE=${{ env.BASE_IMAGE }}
+            - BASE_IMAGE_TAG=${{ env.BASE_IMAGE_TAG }}
+            - MACHINE=${{ env.MACHINE }}
+
+          labels: ${{ steps.define-image-metadata.outputs.labels }}
+          oci: false
+
+      # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
+      # https://github.com/macbre/push-to-ghcr/issues/12
+      - name: Lowercase Registry
+        id: registry_case
+        uses: ASzc/change-string-case-action@v6
+        with:
+          string: ${{ env.IMAGE_REGISTRY }}
+
+      # Push the image to GHCR (Image Registry)
+      - name: Push To GHCR
+        uses: redhat-actions/push-to-registry@v2
+        id: push
+        env:
+          REGISTRY_USER: ${{ github.actor }}
+          REGISTRY_PASSWORD: ${{ github.token }}
+        with:
+          image: ${{ steps.build_image.outputs.image }}
+          tags: ${{ steps.build_image.outputs.tags }}
+          registry: ${{ steps.registry_case.outputs.lowercase }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --disable-content-trust
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Sign container
+      - uses: sigstore/cosign-installer@v3.2.0
+        if: github.event_name != 'pull_request'
+
+      - name: Sign container image
+        if: github.event_name != 'pull_request'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.registry_case.outputs.lowercase }}/${{ steps.build_image.outputs.image }}@${TAGS}
+        env:
+          TAGS: ${{ steps.push.outputs.digest }}
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+
+      - name: Echo outputs
+        #if: github.event_name != 'pull_request'
+        run: |
+          echo "${{ toJSON(steps.push.outputs) }}"
