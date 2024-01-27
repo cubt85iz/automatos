@@ -75,7 +75,7 @@ jobs:
             ${{ matrix.image_name }}-${{ env.MACHINE }}
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/cubt85iz/${{ matrix.image_name }}/main/README.md
-            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.description="${{ env.DESCRIPTION }}"
             org.opencontainers.image.title=${{ matrix.image_name }}-${{ env.MACHINE }}
             org.opencontainers.image.version=${{ env.TIMESTAMP }}
 

@@ -30,7 +30,7 @@ install_appimages() {
 
 install_flatpaks() {
   # Write flatpaks to /etc/flatpak.install to install on first boot.
-  jq -r '.flatpaks[][]' config.json > /etc/flatpak.install
+  jq -r '.flatpaks[]' config.json > /etc/flatpak.install
 }
 
 install_github_releases() {
