@@ -1,5 +1,5 @@
 {
-  "base_image": "quay.io/fedora-ostree-desktops/silverblue",
+  "base_image": "ghcr.io/ublue-os/silverblue-main",
   "base_image_tag": "39",
   "description": "A desktop image derived from Fedora Silverblue.",
   "appimages": [
