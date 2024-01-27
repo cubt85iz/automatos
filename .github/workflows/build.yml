@@ -90,9 +90,9 @@ jobs:
           tags: |
             ${{ steps.generate-image-tags.outputs.alias_tags }}
           build-args: |
-            - BASE_IMAGE=${{ env.BASE_IMAGE }}
-            - BASE_IMAGE_TAG=${{ env.BASE_IMAGE_TAG }}
-            - MACHINE=${{ env.MACHINE }}
+            BASE_IMAGE=${{ env.BASE_IMAGE }}
+            BASE_IMAGE_TAG=${{ env.BASE_IMAGE_TAG }}
+            MACHINE=${{ env.MACHINE }}
 
           labels: ${{ steps.define-image-metadata.outputs.labels }}
           oci: false
