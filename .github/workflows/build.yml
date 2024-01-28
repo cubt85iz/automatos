@@ -1,12 +1,12 @@
 name: build
 on:
-  # schedule:
-  #   - cron: "45 00 * * *"
-  # push:
-  #   branches:
-  #     - main
-  #   paths-ignore:
-  #     - "**.md"
+  schedule:
+    - cron: "45 00 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
   workflow_dispatch:
 
 env:
