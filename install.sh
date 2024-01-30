@@ -6,7 +6,7 @@ install_appimages() {
   for APPIMAGE in $(jq -c '.appimages[]' config.json)
   do
     if [ ! -d "/var/opt/appimages" ]; then
-      mkdir /var/opt/appimages
+      mkdir -p /var/opt/appimages
     fi
 
     NAME=$(echo "$APPIMAGE" | jq -r '.name')
