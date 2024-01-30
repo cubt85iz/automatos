@@ -4,18 +4,22 @@
   "description": "A desktop image derived from Fedora Silverblue with the latest Nvidia drivers.",
   "appimages": [
     {
-      "name": "mediaelch",
+      "name": "MediaElch",
       "source": "Komet/MediaElch"
     },
     {
-      "name": "tuta",
+      "name": "Tuta",
       "source": "tutao/tutanota",
       "pattern": "Desktop"
     },
     {
-      "name": "bitwarden",
+      "name": "Bitwarden",
       "source": "bitwarden/clients",
       "pattern": "Desktop"
+    },
+    {
+      "name": "balenaEtcher",
+      "source": "balena-io/etcher"
     }
   ],
   "flatpaks": [
