@@ -46,6 +46,7 @@
       "fuse-sshfs",
       "gvfs-nfs",
       "input-remapper",
+      "just",
       "steam-devices",
       "tmux"
     ],
