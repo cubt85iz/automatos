@@ -5,8 +5,8 @@ set -euox pipefail
 install_appimages() {
   for APPIMAGE in $(jq -c '.appimages[]' config.json)
   do
-    if [ ! -d "/opt/appimages" ]; then
-      mkdir /opt/appimages
+    if [ ! -d "/var/opt/appimages" ]; then
+      mkdir /var/opt/appimages
     fi
 
     NAME=$(echo "$APPIMAGE" | jq -r '.name')
@@ -22,8 +22,8 @@ install_appimages() {
 
     # Download AppImage to /usr/local/bin
     if [ -n "${ASSET_URL-}" ]; then
-      curl -sSL "$ASSET_URL" -o "/opt/appimages/$NAME.AppImage"
-      chmod +x "/opt/appimages/$NAME.AppImage"
+      curl -sSL "$ASSET_URL" -o "/var/opt/appimages/$NAME.AppImage"
+      chmod +x "/var/opt/appimages/$NAME.AppImage"
     else
       echo "Unable to determine asset url for $NAME."
       exit 1
