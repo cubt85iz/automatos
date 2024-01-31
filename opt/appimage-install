@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euox pipefail
+
 # JSON file containing AppImage descriptions
 JSON=${1:-}
 if [ -z "$JSON" ]; then
@@ -30,6 +32,33 @@ do
   if [ -n "${ASSET_URL-}" ]; then
     curl -sSL "$ASSET_URL" -o "/opt/appimages/$NAME.AppImage"
     chmod +x "/opt/appimages/$NAME.AppImage"
+
+    # Extract AppImage to temporary directory.
+    if [ ! -d "/tmp/$NAME" ]; then
+      mkdir /tmp/$NAME
+    fi
+    pushd /tmp/$NAME &> /dev/null
+    /opt/appimages/$NAME.AppImage --appimage-extract
+
+    # Install Desktop Entry
+    if [ ! -d "/usr/local/share/applications" ]; then
+      mkdir "/usr/local/share/applications"
+    fi
+    cp squashfs-root/*.desktop /usr/local/share/applications/
+
+    # Install Icons
+    if [ ! -d "/usr/local/share/icons" ]; then
+      mkdir "/usr/local/share/icons"
+    fi
+    rsync -a squashfs-root/usr/share/icons/ /usr/local/share/icons/
+    if [ $NAME == "MediaElch" ]; then
+      cp squashfs-root/MediaElch.png /usr/local/share/icons/
+    fi
+
+    # Teardown
+    popd &> /dev/null
+    rm -rf /tmp/$NAME
+
   else
     echo "Unable to determine asset url for $NAME."
     exit 1
