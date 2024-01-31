@@ -1,0 +1,14 @@
+[Unit]
+Description=Install AppImages indicated by user
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecCondition=/bin/bash -c "/usr/bin/test \"$(sha256sum /etc/appimages-install.json | cut -d ' ' -f 1)\" != \"$(cat /var/lib/appimages/.installed)\""
+ExecStart=/bin/bash -c "/usr/local/bin/appimage-install /etc/appimages-install.json"
+ExecStartPost=/bin/bash -c "sha256sum /etc/appimages-install.json | cut -d ' ' -f 1 > /var/lib/appimages/.installed"
+
+[Install]
+WantedBy=multi-user.target

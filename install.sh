@@ -3,32 +3,8 @@
 set -euox pipefail
 
 install_appimages() {
-  for APPIMAGE in $(jq -c '.appimages[]' config.json)
-  do
-    if [ ! -d "/var/opt/appimages" ]; then
-      mkdir -p /var/opt/appimages
-    fi
-
-    NAME=$(echo "$APPIMAGE" | jq -r '.name')
-    SOURCE=$(echo "$APPIMAGE" | jq -r '.source')
-    PATTERN=$(echo "$APPIMAGE" | jq -r '.pattern')
-
-    # Query the Github REST API for releases.
-    if [ "${PATTERN-}" == "null" ]; then
-      ASSET_URL=$(curl -s -X GET "https://api.github.com/repos/$SOURCE/releases/latest" | jq -r '.assets | map(select(.name | contains("AppImage"))) | first | .browser_download_url')
-    else
-      ASSET_URL=$(curl -s -X GET "https://api.github.com/repos/$SOURCE/releases" | jq --arg PATTERN "$PATTERN" -r 'map(select(.name | test($PATTERN))) | first | .assets | map(select(.name | contains("AppImage"))) | first | .browser_download_url')
-    fi
-
-    # Download AppImage to /usr/local/bin
-    if [ -n "${ASSET_URL-}" ]; then
-      curl -sSL "$ASSET_URL" -o "/var/opt/appimages/$NAME.AppImage"
-      chmod +x "/var/opt/appimages/$NAME.AppImage"
-    else
-      echo "Unable to determine asset url for $NAME."
-      exit 1
-    fi
-  done
+  # Write appimages to /etc/appimages-install.json to install on first boot.
+  jq -r '.appimages' config.json > /etc/appimages-install.json
 }
 
 install_flatpaks() {
