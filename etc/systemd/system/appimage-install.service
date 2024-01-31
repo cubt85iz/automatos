@@ -7,7 +7,7 @@ Wants=network-online.target
 Type=oneshot
 RemainAfterExit=yes
 ExecCondition=/bin/bash -c "/usr/bin/test \"$(sha256sum /etc/appimages-install.json | cut -d ' ' -f 1)\" != \"$(cat /var/lib/appimages/.installed)\""
-ExecStart=/bin/bash -c "/usr/local/bin/appimage-install /etc/appimages-install.json"
+ExecStart=/bin/bash -c "/opt/appimage-install /etc/appimages-install.json"
 ExecStartPost=/bin/bash -c "sha256sum /etc/appimages-install.json | cut -d ' ' -f 1 > /var/lib/appimages/.installed"
 
 [Install]
