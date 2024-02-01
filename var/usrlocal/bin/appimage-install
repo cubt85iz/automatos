@@ -47,10 +47,7 @@ do
     cp squashfs-root/*.desktop /usr/local/share/applications/
 
     # Install Icons
-    if [ ! -d "/usr/local/share/icons" ]; then
-      mkdir "/usr/local/share/icons"
-    fi
-    rsync -a squashfs-root/usr/share/icons/ /usr/local/share/icons/
+    cp -Rv squashfs-root/usr/share/icons /usr/local/share/
     if [ $NAME == "MediaElch" ]; then
       cp squashfs-root/MediaElch.png /usr/local/share/icons/
     fi
