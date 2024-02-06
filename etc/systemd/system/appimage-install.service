@@ -8,7 +8,7 @@ Type=oneshot
 RemainAfterExit=yes
 ExecCondition=/bin/bash -c "test \"[ ! -e /var/lib/appimages/.installed ] || \"$(sha256sum /etc/appimages-install.json | cut -d ' ' -f 1)\" != \"$(cat /var/lib/appimages/.installed 2> /dev/null)\"\""
 ExecStartPre=/bin/bash -c "/usr/bin/test -d /var/lib/appimages || mkdir /var/lib/appimages"
-ExecStart=/bin/bash -c "/usr/local/bin/appimage-install /etc/appimages-install.json"
+ExecStart=/bin/bash -c "/opt/scripts/appimage-install /etc/appimages-install.json"
 ExecStartPost=/bin/bash -c "sha256sum /etc/appimages-install.json | cut -d ' ' -f 1 > /var/lib/appimages/.installed"
 
 [Install]
