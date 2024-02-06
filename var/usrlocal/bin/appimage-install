@@ -46,6 +46,10 @@ do
     fi
     cp squashfs-root/*.desktop /usr/local/share/applications/
 
+    # Replace common patterns to correct paths in desktop entries.
+    sed -i "s|AppRun --no-sandbox|/opt/appimages/$NAME.AppImage|" /usr/local/share/applications/*.desktop
+    sed -i "s|Exec=MediaElch|Exec=/opt/appimages/$NAME.AppImage|" /usr/local/share/applications/*.desktop
+
     # Install Icons
     cp -Rv squashfs-root/usr/share/icons /usr/local/share/
     if [ $NAME == "MediaElch" ]; then
