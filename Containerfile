@@ -6,7 +6,7 @@ FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG}
 ARG MACHINE=${MACHINE:-}
 
 COPY etc/ /etc/
-COPY opt/ /opt/
+COPY usr/ /usr/
 COPY *.sh /tmp/
 COPY config/$MACHINE.json /tmp/config.json
 
