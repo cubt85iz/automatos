@@ -56,7 +56,8 @@
       "input-remapper",
       "just",
       "steam-devices",
-      "tmux"
+      "tmux",
+      "unrar"
     ],
     "remove": [
       "firefox",
