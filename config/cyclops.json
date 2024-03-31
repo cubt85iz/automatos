@@ -55,9 +55,11 @@
       "gvfs-nfs",
       "input-remapper",
       "just",
+      "parted",
       "steam-devices",
       "tmux",
-      "unrar"
+      "unrar",
+      "wimlib-utils"
     ],
     "remove": [
       "firefox",
