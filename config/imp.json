@@ -1,6 +1,6 @@
 {
   "base_image": "ghcr.io/ublue-os/silverblue-main",
-  "base_image_tag": "39",
+  "base_image_tag": "40",
   "description": "A desktop image derived from Fedora Silverblue.",
   "appimages": [
     {
