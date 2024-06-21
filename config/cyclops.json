@@ -50,7 +50,6 @@
       "bash-color-prompt",
       "code",
       "fira-code-fonts",
-      "firefox",
       "fuse-sshfs",
       "gvfs-nfs",
       "input-remapper",
@@ -62,8 +61,6 @@
       "wimlib-utils"
     ],
     "remove": [
-      "firefox",
-      "firefox-langpacks",
       "gnome-software-rpm-ostree",
       "gnome-tour"
     ]
