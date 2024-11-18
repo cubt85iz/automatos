@@ -28,6 +28,7 @@
     "com.brave.Browser",
     "com.discordapp.Discord",
     "org.gnome.FileRoller",
+    "org.mozilla.firefox",
     "org.keepassxc.KeePassXC",
     "org.libreoffice.LibreOffice",
     "com.makemkv.MakeMKV",
@@ -61,7 +62,8 @@
       "wimlib-utils"
     ],
     "remove": [
-      "gnome-software-rpm-ostree",
+      "firefox",
+      "firefox-langpacks",
       "gnome-tour"
     ]
   }
