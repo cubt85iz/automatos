@@ -1,6 +1,6 @@
 {
   "base_image": "ghcr.io/ublue-os/silverblue-nvidia",
-  "base_image_tag": "40",
+  "base_image_tag": "41",
   "description": "A desktop image derived from Fedora Silverblue with the latest Nvidia drivers.",
   "appimages": [
     {
