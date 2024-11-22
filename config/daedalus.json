@@ -2,48 +2,15 @@
   "base_image": "ghcr.io/ublue-os/silverblue-main",
   "base_image_tag": "41",
   "description": "A laptop image derived from Fedora Silverblue with the legacy Nvidia drivers.",
-  "appimages": [
+  "appimages": [],
+  "flatpaks": [],
+  "github_releases": [
     {
-      "name": "MediaElch",
-      "source": "Komet/MediaElch"
-    },
-    {
-      "name": "Tuta",
-      "source": "tutao/tutanota",
-      "pattern": "Desktop"
-    },
-    {
-      "name": "Bitwarden",
-      "source": "bitwarden/clients",
-      "pattern": "Desktop"
-    },
-    {
-      "name": "balenaEtcher",
-      "source": "balena-io/etcher"
+      "project": "twpayne/chezmoi",
+      "arch": "x86_64"
     }
   ],
-  "flatpaks": [
-    "com.google.AndroidStudio",
-    "org.gnome.Boxes",
-    "com.brave.Browser",
-    "com.discordapp.Discord",
-    "org.gnome.FileRoller",
-    "org.mozilla.firefox",
-    "org.keepassxc.KeePassXC",
-    "org.libreoffice.LibreOffice",
-    "org.bunkus.mkvtoolnix-gui",
-    "com.spotify.Client",
-    "com.valvesoftware.Steam",
-    "org.gimp.GIMP",
-    "org.videolan.VLC"
-],
-"github_releases": [
-  {
-    "project": "twpayne/chezmoi",
-    "arch": "x86_64"
-  }
-],
-"packages": {
+  "packages": {
     "install": [
       "bash-color-prompt",
       "code",

@@ -2,44 +2,8 @@
   "base_image": "ghcr.io/ublue-os/silverblue-nvidia",
   "base_image_tag": "41",
   "description": "A desktop image derived from Fedora Silverblue with the latest Nvidia drivers.",
-  "appimages": [
-    {
-      "name": "MediaElch",
-      "source": "Komet/MediaElch"
-    },
-    {
-      "name": "Tuta",
-      "source": "tutao/tutanota",
-      "pattern": "Desktop"
-    },
-    {
-      "name": "Bitwarden",
-      "source": "bitwarden/clients",
-      "pattern": "Desktop"
-    },
-    {
-      "name": "balenaEtcher",
-      "source": "balena-io/etcher"
-    }
-  ],
-  "flatpaks": [
-    "com.google.AndroidStudio",
-    "org.gnome.Boxes",
-    "com.brave.Browser",
-    "com.discordapp.Discord",
-    "org.gnome.FileRoller",
-    "org.mozilla.firefox",
-    "org.keepassxc.KeePassXC",
-    "org.libreoffice.LibreOffice",
-    "com.makemkv.MakeMKV",
-    "org.bunkus.mkvtoolnix-gui",
-    "org.openrgb.OpenRGB",
-    "org.freedesktop.Piper",
-    "com.spotify.Client",
-    "com.valvesoftware.Steam",
-    "org.gimp.GIMP",
-    "org.videolan.VLC"
-  ],
+  "appimages": [],
+  "flatpaks": [],
   "github_releases": [
     {
       "project": "twpayne/chezmoi",
