@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+set -euox pipefail
+
+install_appimages() {
+  # Iterate over specified appimages
+  for APPIMAGE in $(jq -c '.appimages[]' "$JSON")
+  do
+    # Parse appimage configuration into variables
+    NAME=$(echo "$APPIMAGE" | jq -r '.name')
+    SOURCE=$(echo "$APPIMAGE" | jq -r '.source')
+    PATTERN=$(echo "$APPIMAGE" | jq -r '.pattern')
+
+    # If necessary, create the directory for appimage
+    APPIMAGE_DIR=$(jq -r '.directory' "$JSON")
+    if [ ! -d "$APPIMAGE_DIR/$NAME" ]; then
+      mkdir -p "$APPIMAGE_DIR/$NAME"
+    fi
+
+    # Query the Github REST API for releases.
+    if [ "${PATTERN-}" == "null" ]; then
+      ASSET_URL=$(curl -sS -X GET "https://api.github.com/repos/$SOURCE/releases/latest" | jq -r '.assets | map(select(.name | contains("AppImage"))) | first | .browser_download_url')
+    else
+      ASSET_URL=$(curl -sS -X GET "https://api.github.com/repos/$SOURCE/releases" | jq --arg PATTERN "$PATTERN" -r 'map(select(.name | test($PATTERN))) | first | .assets | map(select(.name | contains("AppImage"))) | first | .browser_download_url')
+    fi
+
+    # Determine if latest asset is equivalent to installed asset
+    if [ -f "$APPIMAGE_DIR/$NAME/.url" ]; then
+      APPIMAGE_ASSET_URL=$(cat "$APPIMAGE_DIR/$NAME/.url")
+    fi
+    APPIMAGE_UP2DATE=$(test "$ASSET_URL" = "$APPIMAGE_ASSET_URL")
+
+    # Install AppImage
+    if [ ! $APPIMAGE_UP2DATE ] && [ -n "${ASSET_URL-}" ]; then
+      curl -sSL "$ASSET_URL" -o "$APPIMAGE_DIR/$NAME/$NAME.AppImage"
+      chmod +x "$APPIMAGE_DIR/$NAME/$NAME.AppImage"
+
+      # Extract AppImage to temporary directory.
+      if [ ! -d "/tmp/$NAME" ]; then
+        mkdir /tmp/$NAME
+      fi
+      pushd /tmp/$NAME &> /dev/null
+      $APPIMAGE_DIR/$NAME/$NAME.AppImage --appimage-extract
+
+      # Install Desktop Entry
+      if [ ! -d "$HOME/.local/share/applications" ]; then
+        mkdir "$HOME/.local/share/applications"
+      fi
+      cp squashfs-root/*.desktop "$HOME/.local/share/applications/"
+
+      # Replace common patterns to correct paths in desktop entries.
+      sed -i "s|AppRun --no-sandbox|$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
+      sed -i "s|Exec=MediaElch|Exec=$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
+
+      # Install Icons
+      cp -Rv squashfs-root/usr/share/icons $HOME/.local/share/
+      if [ $NAME == "MediaElch" ]; then
+        cp squashfs-root/MediaElch.png $HOME/.local/share/icons/
+      fi
+
+      # Record asset for installation
+      echo "$ASSET_URL" > "$APPIMAGE_DIR/$NAME/.url"
+
+      # Teardown
+      popd &> /dev/null
+      rm -rf /tmp/$NAME
+
+    else
+      echo "Unable to determine asset url for $NAME."
+      exit 1
+    fi
+  done
+}
+
+# JSON file containing appimage configuration
+JSON=${1-$HOME/.config/appimage-config.json}
+if [ ! -f "$JSON" ]; then
+  echo "ERROR: Unable to locate specified JSON file ($JSON)."
+  exit 1
+fi
+
+install_appimages
