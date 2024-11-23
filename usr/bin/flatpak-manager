@@ -3,10 +3,10 @@
 set -euox pipefail
 
 install_flatpaks() {
-  if [ -f flatpak-config.json ]; then
-    INCLUDED_FLATPAKS=$(jq -r '.include[]' "$JSON" | tr '\n' ' ')
+  if [ -f "$JSON" ]; then
+    INCLUDED_FLATPAKS=$(jq -r '.include[]' "$JSON" | tr '\n' ' ' | xargs)
     if [ -n "$INCLUDED_FLATPAKS" ]; then
-      /usr/bin/flatpak install --user --noninteractive -y "$INCLUDED_FLATPAKS"
+      /usr/bin/flatpak install --user --noninteractive -y $INCLUDED_FLATPAKS
     else
       echo "INFO: No flatpaks found in configuration."
     fi
@@ -17,10 +17,10 @@ install_flatpaks() {
 }
 
 remove_flatpaks() {
-  if [ -f flatpak-config.json ]; then
-    EXCLUDED_FLATPAKS=$(jq -r '.exclude[]' "$JSON" | tr '\n' ' ')
+  if [ -f "$JSON" ]; then
+    EXCLUDED_FLATPAKS=$(jq -r '.exclude[]' "$JSON" | tr '\n' ' ' | xargs)
     if [ -n "$EXCLUDED_FLATPAKS" ]; then
-      /usr/bin/flatpak uninstall --user --noninteractive -y "$EXCLUDED_FLATPAKS"
+      /usr/bin/flatpak uninstall --user --noninteractive -y $EXCLUDED_FLATPAKS
     else
       echo "INFO: No flatpaks found in configuration."
     fi
@@ -31,11 +31,11 @@ remove_flatpaks() {
 }
 
 # JSON file containing flatpak configuration
-JSON=${1:"$HOME/.config/flatpak-config.json"}
+JSON=${1:-$HOME/.config/flatpak-config.json}
 if [ ! -f "$JSON" ]; then
   echo "ERROR: Unable to locate specified JSON file ($JSON)."
   exit 1
 fi
 
 remove_flatpaks
-include_flatpaks
+install_flatpaks
