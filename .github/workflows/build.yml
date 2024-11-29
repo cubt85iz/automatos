@@ -23,7 +23,7 @@ jobs:
       - name: Find config files
         id: config
         run: |
-          pushd config
+          pushd .config
           echo "files=$(ls | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
           popd
       - run: |
@@ -52,9 +52,9 @@ jobs:
         id: setup-env-vars
         shell: bash
         run: |
-          echo "BASE_IMAGE=$(jq -r '.base_image' config/${{ matrix.configuration }})" >> $GITHUB_ENV
-          echo "BASE_IMAGE_TAG=$(jq -r '.base_image_tag' config/${{ matrix.configuration }})" >> $GITHUB_ENV
-          echo "DESCRIPTION=$(jq -r '.description' config/${{ matrix.configuration }})" >> $GITHUB_ENV
+          echo "BASE_IMAGE=$(jq -r '.base_image' .config/${{ matrix.configuration }})" >> $GITHUB_ENV
+          echo "BASE_IMAGE_TAG=$(jq -r '.base_image_tag' .config/${{ matrix.configuration }})" >> $GITHUB_ENV
+          echo "DESCRIPTION=$(jq -r '.description' .config/${{ matrix.configuration }})" >> $GITHUB_ENV
           CONFIG=${{ matrix.configuration }}
           echo "MACHINE=${CONFIG%%.*}" >> $GITHUB_ENV
 
