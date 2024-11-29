@@ -8,7 +8,7 @@ ARG MACHINE=${MACHINE:-}
 COPY etc/ /etc/
 COPY usr/ /usr/
 COPY *.sh /tmp/
-COPY .config/$MACHINE.json /tmp/config.json
+COPY .config/$MACHINE /tmp/config.json
 
 RUN pushd /tmp \
   && ./install.sh \
