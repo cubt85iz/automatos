@@ -34,44 +34,46 @@ install_appimages() {
     fi
 
     # Install AppImage
-    if [ "$ASSET_URL" != "$APPIMAGE_ASSET_URL" ] && [ -n "${ASSET_URL-}" ]; then
-      curl -sSL "$ASSET_URL" -o "$APPIMAGE_DIR/$NAME/$NAME.AppImage"
-      chmod +x "$APPIMAGE_DIR/$NAME/$NAME.AppImage"
+    if [ "$ASSET_URL" != "$APPIMAGE_ASSET_URL" ]; then
+      if [ -n "${ASSET_URL-}" ]; then
+        curl -sSL "$ASSET_URL" -o "$APPIMAGE_DIR/$NAME/$NAME.AppImage"
+        chmod +x "$APPIMAGE_DIR/$NAME/$NAME.AppImage"
 
-      # Extract AppImage to temporary directory.
-      if [ ! -d "/tmp/$NAME" ]; then
-        mkdir /tmp/$NAME
+        # Extract AppImage to temporary directory.
+        if [ ! -d "/tmp/$NAME" ]; then
+          mkdir /tmp/$NAME
+        fi
+        pushd /tmp/$NAME &> /dev/null
+        $APPIMAGE_DIR/$NAME/$NAME.AppImage --appimage-extract
+
+        # Install Desktop Entry
+        if [ ! -d "$HOME/.local/share/applications" ]; then
+          mkdir "$HOME/.local/share/applications"
+        fi
+        cp squashfs-root/*.desktop "$HOME/.local/share/applications/"
+
+        # Replace common patterns to correct paths in desktop entries.
+        sed -i "s|AppRun --no-sandbox|$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
+        sed -i "s|Exec=MediaElch|Exec=$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
+        sed -i "s|Exec=balena-etcher|Exec=$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
+
+        # Install Icons
+        cp -Rv squashfs-root/usr/share/icons $HOME/.local/share/
+        if [ $NAME == "MediaElch" ]; then
+          cp squashfs-root/MediaElch.png $HOME/.local/share/icons/
+        fi
+
+        # Record asset for installation
+        echo "$ASSET_URL" > "$APPIMAGE_DIR/$NAME/.url"
+
+        # Teardown
+        popd &> /dev/null
+        rm -rf /tmp/$NAME
+
+      else
+        echo "Unable to determine asset url for $NAME."
+        exit 1
       fi
-      pushd /tmp/$NAME &> /dev/null
-      $APPIMAGE_DIR/$NAME/$NAME.AppImage --appimage-extract
-
-      # Install Desktop Entry
-      if [ ! -d "$HOME/.local/share/applications" ]; then
-        mkdir "$HOME/.local/share/applications"
-      fi
-      cp squashfs-root/*.desktop "$HOME/.local/share/applications/"
-
-      # Replace common patterns to correct paths in desktop entries.
-      sed -i "s|AppRun --no-sandbox|$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
-      sed -i "s|Exec=MediaElch|Exec=$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
-      sed -i "s|Exec=balena-etcher|Exec=$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
-
-      # Install Icons
-      cp -Rv squashfs-root/usr/share/icons $HOME/.local/share/
-      if [ $NAME == "MediaElch" ]; then
-        cp squashfs-root/MediaElch.png $HOME/.local/share/icons/
-      fi
-
-      # Record asset for installation
-      echo "$ASSET_URL" > "$APPIMAGE_DIR/$NAME/.url"
-
-      # Teardown
-      popd &> /dev/null
-      rm -rf /tmp/$NAME
-
-    else
-      echo "Unable to determine asset url for $NAME."
-      exit 1
     fi
   done
 }
