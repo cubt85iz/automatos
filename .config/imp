@@ -19,10 +19,13 @@
       "gvfs-nfs",
       "input-remapper",
       "just",
+      "libvirt",
       "parted",
+      "qemu",
       "steam-devices",
       "tmux",
       "unrar",
+      "virt-manager",
       "wimlib-utils"
     ],
     "remove": [
