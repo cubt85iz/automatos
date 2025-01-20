@@ -19,6 +19,7 @@
       "java-1.8.0-openjdk",
       "just",
       "parted",
+      "setroubleshoot",
       "steam-devices",
       "tmux",
       "unrar",
