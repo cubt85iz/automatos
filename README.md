@@ -14,7 +14,7 @@ Create your own OCI image containing desired packages and utilities for installi
   * **install** (string[]): List of packages to install.
   * **remove** (string[]): List of packages to remove.
 
-### AppImages
+## AppImages
 
 The AppImage-Manager accepts a JSON file that specifies the AppImages for Github releases that should be installed. This JSON file can be stored anywhere and passed to the AppImage-Manager using a systemd user service.
 
@@ -53,7 +53,7 @@ WantedBy=default.target
 |--|
 | The AppImage-Manager includes quite a bit of AppImage-specific code to ensure desktop entries and icons work properly. This is a section that has some room for improvement. Just note that it may need to be revised for any AppImages that haven't already been used by myself. |
 
-### Flatpaks
+## Flatpaks
 
 The Flatpak-Manager accepts a JSON file that specifies the Flatpaks to installed or removed. This JSON file can be stored anywhere and passed to the Flatpak-Manager using a systemd user service.
 
