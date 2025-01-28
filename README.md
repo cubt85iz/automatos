@@ -49,6 +49,19 @@ ExecStart=/bin/bash -c "/usr/bin/appimage-manager $HOME/.config/appimages.json"
 WantedBy=default.target
 ```
 
+_~/.config/systemd/user/appimage-manager.path_
+
+```
+[Unit]
+Description=Monitor for managing AppImages
+
+[Path]
+PathChanged=%h/.config/appimages.json
+
+[Install]
+WantedBy=default.target
+```
+
 | :memo: **NOTE** |
 |--|
 | The AppImage-Manager includes quite a bit of AppImage-specific code to ensure desktop entries and icons work properly. This is a section that has some room for improvement. Just note that it may need to be revised for any AppImages that haven't already been used by myself. |
@@ -82,6 +95,19 @@ Type=oneshot
 RemainAfterExit=yes
 ExecStartPre=/usr/bin/flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 ExecStart=/usr/bin/flatpak-manager %h/.config/flatpaks.json
+
+[Install]
+WantedBy=default.target
+```
+
+_~/.config/systemd/user/flatpak-manager.path_
+
+```
+[Unit]
+Description=Monitor for managing Flatpaks
+
+[Path]
+PathChanged=%h/.config/flatpaks.json
 
 [Install]
 WantedBy=default.target
