@@ -5,6 +5,7 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+ExecCondition=/usr/bin/test -f %h/.config/appimages.json
 ExecStart=/bin/bash -c "/usr/bin/appimage-manager %h/.config/appimages.json"
 
 [Install]
