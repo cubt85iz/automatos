@@ -1,0 +1,13 @@
+[Unit]
+Description=Install Flatpaks indicated by user
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/usr/bin/flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+ExecStart=/usr/bin/flatpak-manager %h/.config/flatpaks.json
+
+[Install]
+WantedBy=default.target

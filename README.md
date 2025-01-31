@@ -16,9 +16,7 @@ Create your own OCI image containing desired packages and utilities for installi
 
 ## AppImages
 
-The AppImage-Manager accepts a JSON file that specifies the AppImages for Github releases that should be installed. This JSON file can be stored anywhere and passed to the AppImage-Manager using a systemd user service.
-
-_~/.config/appimages.json_
+The AppImage-Manager installs the AppImages specified in the `~/.config/appimages.json` file using a systemd user service. The `~/.config/appimages.json` file is expected to be in the following format.
 
 ```json
 {
@@ -33,44 +31,13 @@ _~/.config/appimages.json_
 }
 ```
 
-_~/.config/systemd/user/appimage-manager.service_
-
-```
-[Unit]
-Description=Service for managing AppImages
-Requires=network-online.target
-After=network-online.target
-
-[Service]
-Type=oneshot
-ExecStart=/bin/bash -c "/usr/bin/appimage-manager $HOME/.config/appimages.json"
-
-[Install]
-WantedBy=default.target
-```
-
-_~/.config/systemd/user/appimage-manager.path_
-
-```
-[Unit]
-Description=Monitor for managing AppImages
-
-[Path]
-PathChanged=%h/.config/appimages.json
-
-[Install]
-WantedBy=default.target
-```
-
 | :memo: **NOTE** |
 |--|
 | The AppImage-Manager includes quite a bit of AppImage-specific code to ensure desktop entries and icons work properly. This is a section that has some room for improvement. Just note that it may need to be revised for any AppImages that haven't already been used by myself. |
 
 ## Flatpaks
 
-The Flatpak-Manager accepts a JSON file that specifies the Flatpaks to installed or removed. This JSON file can be stored anywhere and passed to the Flatpak-Manager using a systemd user service.
-
-_~/.config/flatpaks.json_
+The Flatpak-Manager installs/removes the flatpaks specified in the `~/.config/flatpaks.json` file using a systemd user service. The `~/.config/flatpaks.json` file is expected to be in the following format.
 
 ```json
 {
@@ -80,35 +47,4 @@ _~/.config/flatpaks.json_
   ],
   "exclude": []
 }
-```
-
-_~/.config/systemd/user/flatpak-manager.service_
-
-```
-[Unit]
-Description=Install Flatpaks indicated by user
-After=network-online.target
-Wants=network-online.target
-
-[Service]
-Type=oneshot
-RemainAfterExit=yes
-ExecStartPre=/usr/bin/flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-ExecStart=/usr/bin/flatpak-manager %h/.config/flatpaks.json
-
-[Install]
-WantedBy=default.target
-```
-
-_~/.config/systemd/user/flatpak-manager.path_
-
-```
-[Unit]
-Description=Monitor for managing Flatpaks
-
-[Path]
-PathChanged=%h/.config/flatpaks.json
-
-[Install]
-WantedBy=default.target
 ```

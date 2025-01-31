@@ -1,0 +1,8 @@
+[Unit]
+Description=Monitor for managing Flatpaks
+
+[Path]
+PathChanged=%h/.config/flatpaks.json
+
+[Install]
+WantedBy=default.target
