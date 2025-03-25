@@ -10,7 +10,6 @@
   ],
   "packages": {
     "install": [
-      "bash-color-prompt",
       "code",
       "fira-code-fonts",
       "fuse-sshfs",
@@ -18,7 +17,6 @@
       "input-remapper",
       "java-1.8.0-openjdk",
       "just",
-      "parted",
       "setroubleshoot",
       "steam-devices",
       "tmux",

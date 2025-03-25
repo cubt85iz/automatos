@@ -10,7 +10,6 @@
   ],
   "packages": {
     "install": [
-      "bash-color-prompt",
       "code",
       "fira-code-fonts",
       "fuse-sshfs",

@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=${BASE_IMAGE:-ghcr.io/ublue-os/silverblue-nvidia}
-ARG BASE_IMAGE_TAG=${BASE_IMAGE_TAG:-39-current}
+ARG BASE_IMAGE_TAG=${BASE_IMAGE_TAG:-41-current}
 
 FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG}
 
