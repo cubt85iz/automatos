@@ -24,7 +24,7 @@ remove_packages() {
 install_repos() {
   for REPO in $(jq -c ".repos[]" config.json); do
     REPO_NAME=${REPO##*/}
-    curl -o /etc/yum.repos.d/$REPO_NAME $REPO
+    curl -L $REPO -o /etc/yum.repos.d/$REPO_NAME
   done
 }
 
