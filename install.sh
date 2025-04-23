@@ -21,7 +21,18 @@ remove_packages() {
   rpm-ostree override remove $PACKAGES
 }
 
+install_repos() {
+  readarray -t REPOS < <(jq -r '.repos' config.json)
+  for REPO in ${REPOS[@]}; do
+    REPO_NAME=${REPO##*/}
+    curl -o /etc/yum.repos.d/$REPO_NAME $REPO
+  done
+}
+
 setup() {
+  # Install third-party repositories.
+  install_repos
+  
   # Install desired appimages, flatpaks, & packages
   install_github_releases
   install_packages
