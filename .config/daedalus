@@ -54,7 +54,8 @@
       "firefox",
       "firefox-langpacks",
       "libavcodec-free",
-      "libavdevice-free"
+      "libavdevice-free",
+      "libavformat-free"
     ]
   },
   "repos": [
