@@ -13,12 +13,12 @@ install_github_releases() {
 
 install_packages() {
   PACKAGES=$(jq -r '.packages.install | join(" ")' config.json)
-  rpm-ostree install "$PACKAGES"
+  rpm-ostree install $PACKAGES
 }
 
 remove_packages() {
   PACKAGES=$(jq -r '.packages.remove | join(" ")' config.json)
-  rpm-ostree override remove "$PACKAGES"
+  rpm-ostree override remove $PACKAGES
 }
 
 install_repos() {
