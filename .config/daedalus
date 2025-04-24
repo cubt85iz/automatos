@@ -12,9 +12,6 @@
     "install": [
       "alsa-firmware",
       "code",
-      "fdk-aac",
-      "ffmpeg",
-      "ffmpeg-libs",
       "ffmpegthumbnailer",
       "fira-code-fonts",
       "flatpak-spawn",
@@ -30,7 +27,6 @@
       "libcamera-gstreamer",
       "libcamera-ipa",
       "libcamera-tools",
-      "libfdk-aac",
       "libheif",
       "libva-utils",
       "lshw",
@@ -48,14 +44,31 @@
       "wireguard-tools",
       "zstd"
     ],
+    "overrides": [
+      {
+        "legacy": "fdk-aac-free",
+        "new": "libfdk-aac"
+      },
+      {
+        "legacy": "ffmpeg-free",
+        "new": "ffmpeg"
+      },
+      {
+        "legacy": "ffmpeg-libs-free",
+        "new": "ffmpeg-libs"
+      },
+      {
+        "legacy": "gstreamer1-plugins-bad-free",
+        "new": "gstreamer1-plugins-bad"
+      },
+      {
+        "legacy": "gstreamer1-plugins-ugly-free",
+        "new": "gstreamer1-plugins-ugly"
+      }
+    ],
     "remove": [
-      "fdk-aac-free",
-      "ffmpeg-free",
       "firefox",
-      "firefox-langpacks",
-      "libavcodec-free",
-      "libavdevice-free",
-      "libavformat-free"
+      "firefox-langpacks"
     ]
   },
   "repos": [
