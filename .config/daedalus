@@ -49,9 +49,13 @@
       "zstd"
     ],
     "remove": [
+      "fdk-aac-free",
+      "ffmpeg-free",
       "firefox",
       "firefox-langpacks",
-      "gnome-tour"
+      "gnome-tour",
+      "libavcodec-free",
+      "libavdevice-free"
     ]
   },
   "repos": [
