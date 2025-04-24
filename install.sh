@@ -32,12 +32,12 @@ setup() {
   # Install third-party repositories.
   install_repos
   
+  # Remove undesired packages
+  remove_packages
+
   # Install desired appimages, flatpaks, & packages
   install_github_releases
   install_packages
-
-  # Remove undesired packages
-  remove_packages
 }
 
 setup
