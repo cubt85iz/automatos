@@ -18,10 +18,10 @@ install_packages() {
 
 override_packages() {
   readarray -t OVERRIDES < <(jq -r '.packages.overrides[] | .legacy + ":" + .new' config.json)
-  if [ -n "$OVERRIDES" ]; then
+  if [ ${#OVERRIDES[@]} -gt 0 ]; then
     for OVERRIDE in "${OVERRIDES[@]}"; do
-      LEGACY="${OVERRIDE%:*}"
-      NEW="${OVERRIDE##*:}"
+      LEGACY=${OVERRIDE%:*}
+      NEW=${OVERRIDE##*:}
       rpm-ostree override remove "$LEGACY" --install "$NEW"
     done
   fi
