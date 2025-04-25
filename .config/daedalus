@@ -58,7 +58,7 @@
         "new": "ffmpeg-libs"
       },
       {
-        "legacy": "gstreamer1-plugins-bad-free",
+        "legacy": "gstreamer1-plugins-bad-free gstreamer1-plugins-bad-free-libs",
         "new": "gstreamer1-plugins-bad"
       },
       {
