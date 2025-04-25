@@ -17,7 +17,7 @@ install_packages() {
 }
 
 override_packages() {
-  OVERRIDES=$(jq -r '.packages.overrides[] | .legacy + ":" + .new' config.json)
+  readarray -t OVERRIDES < <(jq -r '.packages.overrides[] | .legacy + ":" + .new' config.json)
   if [ -n "$OVERRIDES" ]; then
     for OVERRIDE in "${OVERRIDES[@]}"; do
       LEGACY="${OVERRIDE%:*}"
