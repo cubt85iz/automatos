@@ -17,13 +17,14 @@ install_packages() {
 }
 
 override_packages() {
-  true
   OVERRIDES=$(jq -r '.packages.overrides[] | .legacy + ":" + .new' config.json)
-  for OVERRIDE in ${OVERRIDES[@]}; do
-    LEGACY=${OVERRIDE%:*}
-    NEW=${OVERRIDE##*:}
-    rpm-ostree override remove $LEGACY --install $NEW
-  done
+  if [ -n "$OVERRIDES" ]; then
+    for OVERRIDE in ${OVERRIDES[@]}; do
+      LEGACY=${OVERRIDE%:*}
+      NEW=${OVERRIDE##*:}
+      rpm-ostree override remove $LEGACY --install $NEW
+    done
+  fi
 }
 
 remove_packages() {

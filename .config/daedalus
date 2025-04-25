@@ -54,7 +54,7 @@
         "new": "ffmpeg"
       },
       {
-        "legacy": "ffmpeg-libs-free",
+        "legacy": "libavutil-free libswresample-free libswscale-free libpostproc-free libavcodec-free libavformat-free libavfilter-free libavdevice-free",
         "new": "ffmpeg-libs"
       },
       {
