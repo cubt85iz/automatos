@@ -16,7 +16,9 @@ install_packages() {
   readarray -t PKGLIST < <(jq -r '.packages.install[]' config.json)
 
   # Install packages.
-  rpm-ostree install "${PKGLIST[@]}"
+  if [ ${#PKGLIST[@]} -gt 0 ]; then
+    rpm-ostree install "${PKGLIST[@]}"
+  fi
 }
 
 remove_packages() {
