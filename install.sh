@@ -29,7 +29,7 @@ remove_packages() {
       readarray -t REMOVE < <(echo "$PKG" | jq -r '.remove[]')
 
       # Get replacement package
-      REPLACE=$(echo "$PKG" | jq -r '.replace[]')
+      REPLACE=$(echo "$PKG" | jq -r '.replace')
 
       # Replace package(s)
       if [ -n "$REPLACE" ]; then
