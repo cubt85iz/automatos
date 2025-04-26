@@ -32,7 +32,7 @@ remove_packages() {
       REPLACE=$(echo "$PKG" | jq -r '.replace')
 
       # Replace package(s)
-      if [ -n "$REPLACE" ]; then
+      if [ -n "$REPLACE" ] && [ "$REPLACE" != "null" ]; then
         rpm-ostree override remove "${REMOVE[@]}" --install "$REPLACE"
 
       # Remove package(s)

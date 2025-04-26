@@ -24,9 +24,13 @@
       "wimlib-utils"
     ],
     "remove": [
-      "firefox",
-      "firefox-langpacks",
-      "gnome-tour"
+      {
+        "remove": [
+          "firefox",
+          "firefox-langpacks",
+          "gnome-tour"
+        ]
+      }
     ]
   }
 }
