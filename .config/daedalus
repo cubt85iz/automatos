@@ -44,31 +44,51 @@
       "wireguard-tools",
       "zstd"
     ],
-    "overrides": [
-      {
-        "legacy": "fdk-aac-free",
-        "new": "libfdk-aac"
-      },
-      {
-        "legacy": "ffmpeg-free",
-        "new": "ffmpeg"
-      },
-      {
-        "legacy": "libavutil-free libswresample-free libswscale-free libpostproc-free libavcodec-free libavformat-free libavfilter-free libavdevice-free",
-        "new": "ffmpeg-libs"
-      },
-      {
-        "legacy": "gstreamer1-plugins-bad-free gstreamer1-plugins-bad-free-libs",
-        "new": "gstreamer1-plugins-bad"
-      },
-      {
-        "legacy": "gstreamer1-plugins-ugly-free",
-        "new": "gstreamer1-plugins-ugly"
-      }
-    ],
     "remove": [
-      "firefox",
-      "firefox-langpacks"
+      {
+        "remove": [
+          "firefox",
+          "firefox-langpacks"
+        ]
+      },
+      {
+        "remove": [
+          "fdk-aac-free"
+        ],
+        "replace": "libfdk-aac"
+      },
+      {
+        "remove": [
+          "ffmpeg-free"
+        ],
+        "replace": "ffmpeg"
+      },
+      {
+        "remove": [
+          "libavutil-free",
+          "libswresample-free",
+          "libswscale-free", 
+          "libpostproc-free",
+          "libavcodec-free",
+          "libavformat-free",
+          "libavfilter-free",
+          "libavdevice-free" 
+        ],
+        "replace": "ffmpeg-libs"
+      },
+      {
+        "remove": [
+          "gstreamer1-plugins-bad-free",
+          "gstreamer1-plugins-bad-free-libs"
+        ],
+        "replace": "gstreamer1-plugins-bad"
+      },
+      {
+        "remove": [
+          "gstreamer1-plugins-ugly-free"
+        ],
+        "replace": "gstreamer1-plugins-ugly"
+      }
     ]
   },
   "repos": [
