@@ -13,7 +13,7 @@ install_github_releases() {
 
 install_packages() {
   # Get list of packages for installation.
-  readarray -t PKGLIST < <(jq -c '.packages.install[]' config.json)
+  readarray -t PKGLIST < <(jq -r '.packages.install[]' config.json)
 
   # Install packages.
   rpm-ostree install "${PKGLIST[@]}"
