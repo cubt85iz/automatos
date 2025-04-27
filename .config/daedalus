@@ -1,7 +1,7 @@
 {
-  "base_image": "quay.io/fedora-ostree-desktops/cosmic-atomic",
+  "base_image": "quay.io/fedora-ostree-desktops/silverblue",
   "base_image_tag": "42",
-  "description": "A laptop image derived from Fedora Cosmic Atomic.",
+  "description": "A laptop image derived from Fedora Silverblue.",
   "github_releases": [
     {
       "project": "twpayne/chezmoi",
@@ -48,7 +48,8 @@
       {
         "remove": [
           "firefox",
-          "firefox-langpacks"
+          "firefox-langpacks",
+          "gnome-tour"
         ]
       },
       {
