@@ -47,8 +47,6 @@
     "remove": [
       {
         "remove": [
-          "firefox",
-          "firefox-langpacks",
           "gnome-tour"
         ]
       },
