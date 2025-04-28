@@ -45,7 +45,7 @@ remove_packages() {
   fi
 }
 
-enable_repo {
+enable_repo() {
   REPO=${1:-}
   if [ -n "$REPO" ] && [ -f "$REPO" ]; then
     sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/"$REPO"
