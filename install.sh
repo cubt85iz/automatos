@@ -47,7 +47,7 @@ remove_packages() {
 
 enable_repo() {
   REPO=${1:-}
-  if [ -n "$REPO" ] && [ -f "$REPO" ]; then
+  if [ -n "$REPO" ] && [ ! -f "$REPO" ]; then
     sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/"$REPO"
   else
     &>2 echo "[ERROR] No repository provided or provided repository not found."
