@@ -10,6 +10,7 @@
   ],
   "packages": {
     "install": [
+      "akmod-nvidia-470xx",
       "alsa-firmware",
       "code",
       "ffmpegthumbnailer",
@@ -45,6 +46,7 @@
       "tmux",
       "unrar",
       "wireguard-tools",
+      "xorg-x11-drv-nvidia-470xx",
       "zstd"
     ],
     "remove": [
