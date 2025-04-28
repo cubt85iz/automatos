@@ -45,6 +45,16 @@ remove_packages() {
   fi
 }
 
+enable_repo {
+  REPO=${1:-}
+  if [ -n "$REPO" ] && [ -f "$REPO" ]; then
+    sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/"$REPO"
+  else
+    &>2 echo "[ERROR] No repository provided or provided repository not found."
+    exit 1
+  fi
+}
+
 install_repos() {
   for REPO in $(jq -r ".repos[]" config.json); do
     REPO_NAME=${REPO##*/}
@@ -60,6 +70,9 @@ install_repos() {
 setup() {
   # Install third-party repositories.
   install_repos
+
+  # Enable RPMFusion repository
+  enable_repo rpmfusion-nonfree-nvidia-driver.repo
 
   # Remove undesired packages
   remove_packages
