@@ -71,9 +71,6 @@ setup() {
   # Install third-party repositories.
   install_repos
 
-  # Enable RPMFusion repository
-  enable_repo rpmfusion-nonfree-nvidia-driver.repo
-
   # Remove undesired packages
   remove_packages
 
