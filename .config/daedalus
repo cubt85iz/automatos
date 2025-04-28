@@ -10,7 +10,6 @@
   ],
   "packages": {
     "install": [
-      "akmod-nvidia-470xx",
       "alsa-firmware",
       "code",
       "ffmpegthumbnailer",
@@ -40,13 +39,11 @@
       "pipewire-libs-extra",
       "pipewire-plugin-libcamera",
       "powerstat",
-      "smartmontools",
       "steam-devices",
       "symlinks",
       "tmux",
       "unrar",
       "wireguard-tools",
-      "xorg-x11-drv-nvidia-470xx",
       "zstd"
     ],
     "remove": [
@@ -96,7 +93,6 @@
     ]
   },
   "repos": [
-    "https://negativo17.org/repos/fedora-multimedia.repo",
-    "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-42.noarch.rpm"
+    "https://negativo17.org/repos/fedora-multimedia.repo"
   ]
 }
