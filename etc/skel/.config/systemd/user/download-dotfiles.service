@@ -1,0 +1,12 @@
+[Unit]
+Description=Service for downloading dotfiles
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecCondition=/usr/bin/test -f %h/.config/dotfiles.json
+ExecStart=/bin/bash -c "/usr/bin/download-dotfiles"
+
+[Install]
+WantedBy=default.target
