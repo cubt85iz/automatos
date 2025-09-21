@@ -2,6 +2,10 @@
 
 set -euox pipefail
 
+install_dotfiles() {
+  jq -r ".dotfiles" config.json > /etc/skel/.config/dotfiles.json
+}
+
 install_github_releases() {
   for RELEASE in $(jq -c '.github_releases[]' config.json)
   do
@@ -50,7 +54,7 @@ enable_repo() {
   if [ -n "$REPO" ] && [ ! -f "$REPO" ]; then
     sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/"$REPO"
   else
-    &>2 echo "[ERROR] No repository provided or provided repository not found."
+    echo "[ERROR] No repository provided or provided repository not found." > /dev/stderr
     exit 1
   fi
 }
@@ -68,6 +72,10 @@ install_repos() {
 }
 
 setup() {
+
+  # Install configuration file for dotfiles.
+  install_dotfiles
+
   # Install third-party repositories.
   install_repos
 
