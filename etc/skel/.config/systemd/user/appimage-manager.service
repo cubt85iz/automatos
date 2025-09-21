@@ -1,6 +1,6 @@
 [Unit]
 Description=Service for managing AppImages
-Requires=network-online.target
+Wants=network-online.target
 After=network-online.target
 
 [Service]
