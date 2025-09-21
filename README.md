@@ -1,50 +1,130 @@
 # automatOS
 
-Create your own OCI image containing desired packages and utilities for installing user-specified AppImages and Flatpaks.
+Use this repository to define your own customized Fedora Atomic Desktop image. Refer to the [automatos-daedalus](https://github.com/cubt85iz/automatos-daedalus) repository as a guide for creating your own image.
 
-## Configuration Specification
+## JSON Schema Documentation
 
-* **base_image** (string): URL for the base OCI image
-* **base_image_tag** (string): Tag for the base OCI image
-* **description** (string): Short description for the generated image.
-* **github_releases** (object[]): List of Github releases to install.
-  * **project** (string): Github owner & repository.
-  * **arch** (string): System architecture.
-* **packages** (object[]): List of packages to install or remove using rpm-ostree.
-  * **install** (string[]): List of packages to install.
-  * **remove** (string[]): List of packages to remove.
+This document provides an overview of the JSON schema used for defining the structure of a container image configuration.
 
-## AppImages
+### Schema Information
 
-The AppImage-Manager installs the AppImages specified in the `~/.config/appimages.json` file using a systemd user service. The `~/.config/appimages.json` file is expected to be in the following format.
+- **Schema Version**: [Draft-07](http://json-schema.org/draft-07/schema#)
+- **Type**: `object`
 
-```json
-{
-  "directory": "~/.appimages",
-  "appimages": [
-    {
-      "name": "Bitwarden",
-      "source": "bitwarden/clients",
-      "pattern": "Desktop"
-    }
-  ]
-}
-```
+### Properties
 
-| :memo: **NOTE** |
-|--|
-| The AppImage-Manager includes quite a bit of AppImage-specific code to ensure desktop entries and icons work properly. This is a section that has some room for improvement. Just note that it may need to be revised for any AppImages that haven't already been used by myself. |
+#### `base_image`
 
-## Flatpaks
+- **Type**: `string`
+- **Description**: The base image used for the container image.
+- **Example**: `ghcr.io/ublue-os/silverblue-nvidia`
 
-The Flatpak-Manager installs/removes the flatpaks specified in the `~/.config/flatpaks.json` file using a systemd user service. The `~/.config/flatpaks.json` file is expected to be in the following format.
+#### `base_image_tag`
 
-```json
-{
-  "include": [
-    "org.gimp.GIMP",
-    "org.videolan.VLC"
-  ],
-  "exclude": []
-}
-```
+- **Type**: `string`
+- **Description**: The tag associated with the base image, indicating the version.
+- **Example**: `42`
+
+#### `description`
+
+- **Type**: `string`
+- **Description**: A brief description of the image and its purpose.
+- **Example**: A desktop image derived from Fedora Silverblue with the latest Nvidia drivers.
+
+#### `dotfiles`
+
+- **Type**: `array`
+- **Description**: A list of repositories containing user dotfiles.
+- **Items**:
+  - **Type**: `object`
+  - **Properties**:
+    - **user**
+      - **Type**: `string`
+      - **Description**: The user for the dotfiles.
+      - **Example**: `philip`
+    - **repo**
+      - **Type**: `string`
+      - **Description**: The repository hosting the user's dotfiles.
+      - **Example**: `git@github.com:cubt85iz/dotfiles.git`
+  - **Required**: `["user", "repo"]`
+
+#### `github_releases`
+
+- **Type**: `array`
+- **Description**: A list of GitHub releases to install in the container image.
+- **Items**:
+  - **Type**: `object`
+  - **Properties**:
+    - **project**
+      - **Type**: `string`
+      - **Description**: The name of the GitHub project.
+      - **Example**: `twpayne/chezmoi`
+    - **arch**
+      - **Type**: `string`
+      - **Description**: The architecture for which the release is intended.
+      - **Example**: `x86_64`
+  - **Required**: `["project", "arch"]`
+
+#### `packages`
+
+- **Type**: `object`
+- **Description**: Package management details for the image.
+- **Properties**:
+  - **install**
+    - **Type**: `array`
+    - **Description**: A list of packages to be installed.
+    - **Items**:
+      - **Type**: `string`
+      - **Example**: `code`
+    - **Example**:
+
+      ```json
+      [
+        "code",
+        "fira-code-fonts",
+        "fuse-sshfs",
+        "gvfs-nfs",
+        "input-remapper",
+        "just",
+        "setroubleshoot",
+        "steam-devices",
+        "tmux",
+        "unrar",
+        "wimlib-utils"
+      ]
+      ```
+
+  - **remove**
+    - **Type**: `array`
+    - **Description**: A list of packages to be removed.
+    - **Items**:
+      - **Type**: `object`
+      - **Properties**:
+        - **remove**
+          - **Type**: `array`
+          - **Description**: Packages to be removed from the system.
+          - **Items**:
+            - **Type**: `string`
+            - **Example**: `firefox`
+          - **Example**:
+
+            ```json
+            [
+              "firefox",
+              "firefox-langpacks",
+              "gnome-tour"
+            ]
+            ```
+
+    - **Required**: `["remove"]`
+
+### Required Properties
+
+The following properties are required in the JSON object:
+
+- `base_image`
+- `base_image_tag`
+- `description`
+- `dotfiles`
+- `github_releases`
+- `packages`
