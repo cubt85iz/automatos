@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+CHEZMOI_PATH=$HOME/.local/share/chezmoi
+DOTFILES_JSON=$HOME/.config/dotfiles.json
+
+# Get current user
+CURRENT_USER=$(id -un)
+
+# Has configuration been found?
+if test -e "$DOTFILES_JSON"; then
+  # Has chezmoi already been intialized?
+  if ! test -e "$CHEZMOI_PATH"; then
+    # Fetch repo from configuration for current user.
+    REPO=$(jq -r --arg current_user "$CURRENT_USER" '.[] | select(.user == $current_user) | .repo' "$DOTFILES_JSON")
+
+    if [ -n "$REPO" ]; then
+      # Download dotfiles
+      chezmoi init --apply "$REPO"
+    else
+      echo "Did not find repo for user in $DOTFILES_JSON. Skipping download of dotfiles..."
+    fi
+  else
+    echo "Chezmoi has already been initialized. Skipping download of dotfiles..."
+  fi
+else
+  echo "Could not locate configuration file. Skipping download of dotfiles..."
+fi
