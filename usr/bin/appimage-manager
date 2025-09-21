@@ -41,9 +41,9 @@ install_appimages() {
 
         # Extract AppImage to temporary directory.
         if [ ! -d "/tmp/$NAME" ]; then
-          mkdir /tmp/$NAME
+          mkdir "/tmp/$NAME"
         fi
-        pushd /tmp/$NAME &> /dev/null
+        pushd "/tmp/$NAME" &> /dev/null
         $APPIMAGE_DIR/$NAME/$NAME.AppImage --appimage-extract
 
         # Install Desktop Entry
@@ -53,14 +53,14 @@ install_appimages() {
         cp squashfs-root/*.desktop "$HOME/.local/share/applications/"
 
         # Replace common patterns to correct paths in desktop entries.
-        sed -i "s|AppRun --no-sandbox|$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
-        sed -i "s|Exec=MediaElch|Exec=$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
-        sed -i "s|Exec=balena-etcher|Exec=$APPIMAGE_DIR/$NAME/$NAME.AppImage|" $HOME/.local/share/applications/*.desktop
+        sed -i "s|AppRun --no-sandbox|$APPIMAGE_DIR/$NAME/$NAME.AppImage|" "$HOME/.local/share/applications/*.desktop"
+        sed -i "s|Exec=MediaElch|Exec=$APPIMAGE_DIR/$NAME/$NAME.AppImage|" "$HOME/.local/share/applications/*.desktop"
+        sed -i "s|Exec=balena-etcher|Exec=$APPIMAGE_DIR/$NAME/$NAME.AppImage|" "$HOME/.local/share/applications/*.desktop"
 
         # Install Icons
-        cp -Rv squashfs-root/usr/share/icons $HOME/.local/share/
-        if [ $NAME == "MediaElch" ]; then
-          cp squashfs-root/MediaElch.png $HOME/.local/share/icons/
+        cp -Rv squashfs-root/usr/share/icons "$HOME/.local/share/"
+        if [ "$NAME" == "MediaElch" ]; then
+          cp squashfs-root/MediaElch.png "$HOME/.local/share/icons/"
         fi
 
         # Record asset for installation
@@ -68,7 +68,7 @@ install_appimages() {
 
         # Teardown
         popd &> /dev/null
-        rm -rf /tmp/$NAME
+        rm -rf "/tmp/$NAME"
 
       else
         echo "Unable to determine asset url for $NAME."
@@ -79,7 +79,7 @@ install_appimages() {
 }
 
 # JSON file containing appimage configuration
-JSON=${1-$HOME/.config/appimage-config.json}
+JSON=${1:-$HOME/.config/appimages.json}
 if [ ! -f "$JSON" ]; then
   echo "ERROR: Unable to locate specified JSON file ($JSON)."
   exit 1

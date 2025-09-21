@@ -31,11 +31,11 @@ remove_flatpaks() {
 }
 
 # JSON file containing flatpak configuration
-JSON=${1:-$HOME/.config/flatpak-config.json}
-if [ ! -f "$JSON" ]; then
+JSON=${1:-$HOME/.config/flatpaks.json}
+if [ -f "$JSON" ]; then
+  remove_flatpaks
+  install_flatpaks
+else
   echo "ERROR: Unable to locate specified JSON file ($JSON)."
   exit 1
 fi
-
-remove_flatpaks
-install_flatpaks
