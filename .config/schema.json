@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "base_image": {
+      "type": "string",
+      "description": "The base image used for the container image.",
+      "example": "ghcr.io/ublue-os/silverblue-nvidia"
+    },
+    "base_image_tag": {
+      "type": "string",
+      "description": "The tag associated with the base image, indicating the version.",
+      "example": "42"
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of the image and its purpose.",
+      "example": "A desktop image derived from Fedora Silverblue with the latest Nvidia drivers."
+    },
+    "dotfiles": {
+      "type": "array",
+      "description": "A list of repositories containing user dotfiles.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string",
+            "description": "The user for the dotfiles.",
+            "example": "philip"
+          },
+          "repo": {
+            "type": "string",
+            "description": "The repository hosting the user's dotfiles.",
+            "example": "git@github.com:cubt85iz/dotfiles.git"
+          }
+        },
+        "required": ["user", "repo"]
+      }
+    },
+    "github_releases": {
+      "type": "array",
+      "description": "A list of GitHub releases to install in the container image.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "string",
+            "description": "The name of the GitHub project.",
+            "example": "twpayne/chezmoi"
+          },
+          "arch": {
+            "type": "string",
+            "description": "The architecture for which the release is intended.",
+            "example": "x86_64"
+          }
+        },
+        "required": ["project", "arch"]
+      }
+    },
+    "packages": {
+      "type": "object",
+      "description": "Package management details for the image.",
+      "properties": {
+        "install": {
+          "type": "array",
+          "description": "A list of packages to be installed.",
+          "items": {
+            "type": "string",
+            "example": "code"
+          },
+          "example": [
+            "code",
+            "fira-code-fonts",
+            "fuse-sshfs",
+            "gvfs-nfs",
+            "input-remapper",
+            "just",
+            "setroubleshoot",
+            "steam-devices",
+            "tmux",
+            "unrar",
+            "wimlib-utils"
+          ]
+        },
+        "remove": {
+          "type": "array",
+          "description": "A list of packages to be removed.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "remove": {
+                "type": "array",
+                "description": "Packages to be removed from the system.",
+                "items": {
+                  "type": "string",
+                  "example": "firefox"
+                },
+                "example": [
+                  "firefox",
+                  "firefox-langpacks",
+                  "gnome-tour"
+                ]
+              }
+            },
+            "required": ["remove"]
+          }
+        }
+      },
+      "required": ["install", "remove"]
+    }
+  },
+  "required": ["base_image", "base_image_tag", "description", "dotfiles", "github_releases", "packages"]
+}
