@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euox pipefail
+set -euxo pipefail
 
 install_dotfiles() {
   jq -r ".dotfiles" config.json > /etc/skel/.config/dotfiles.json
@@ -60,15 +60,17 @@ enable_repo() {
 }
 
 install_repos() {
-  for REPO in $(jq -r ".repos[]" config.json); do
-    REPO_NAME=${REPO##*/}
-    REPO_TYPE=${REPO_NAME##*.}
-    if [ "$REPO_TYPE" == "rpm" ]; then
-      rpm-ostree install $REPO
-    else
-      curl -L "$REPO" -o "/etc/yum.repos.d/$REPO_NAME"
-    fi
-  done
+  if [ "$(jq -r ".repos" config.json)" != "null" ]; then
+    for REPO in $(jq -r ".repos[]" config.json); do
+      REPO_NAME=${REPO##*/}
+      REPO_TYPE=${REPO_NAME##*.}
+      if [ "$REPO_TYPE" == "rpm" ]; then
+        rpm-ostree install $REPO
+      else
+        curl -L "$REPO" -o "/etc/yum.repos.d/$REPO_NAME"
+      fi
+    done
+  fi
 }
 
 setup() {
