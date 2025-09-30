@@ -17,7 +17,7 @@ install_packages() {
 
   # Install packages.
   if [ ${#PKGLIST[@]} -gt 0 ]; then
-    dnf install --setopt=install_weak_deps=False  "${PKGLIST[@]}"
+    dnf --assumeyes install --setopt=install_weak_deps=False  "${PKGLIST[@]}"
   fi
 }
 
