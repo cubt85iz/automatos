@@ -17,7 +17,7 @@ install_packages() {
 
   # Install packages.
   if [ ${#PKGLIST[@]} -gt 0 ]; then
-    rpm-ostree install "${PKGLIST[@]}"
+    dnf install --setopt=install_weak_deps=False  "${PKGLIST[@]}"
   fi
 }
 
