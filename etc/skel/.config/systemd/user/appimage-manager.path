@@ -1,8 +1,0 @@
-[Unit]
-Description=Monitor for managing AppImages
-
-[Path]
-PathChanged=%h/.config/appimages.json
-
-[Install]
-WantedBy=default.target

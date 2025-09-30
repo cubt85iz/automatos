@@ -2,10 +2,6 @@
 
 set -euxo pipefail
 
-install_dotfiles() {
-  jq -r ".dotfiles" config.json > /etc/skel/.config/dotfiles.json
-}
-
 install_github_releases() {
   for RELEASE in $(jq -c '.github_releases[]' config.json)
   do
@@ -74,9 +70,6 @@ install_repos() {
 }
 
 setup() {
-
-  # Install configuration file for dotfiles.
-  install_dotfiles
 
   # Install third-party repositories.
   install_repos

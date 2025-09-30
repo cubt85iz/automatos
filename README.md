@@ -31,23 +31,6 @@ This document provides an overview of the JSON schema used for defining the stru
 - **Description**: A brief description of the image and its purpose.
 - **Example**: A desktop image derived from Fedora Silverblue with the latest Nvidia drivers.
 
-#### `dotfiles`
-
-- **Type**: `array`
-- **Description**: A list of repositories containing user dotfiles.
-- **Items**:
-  - **Type**: `object`
-  - **Properties**:
-    - **user**
-      - **Type**: `string`
-      - **Description**: The user for the dotfiles.
-      - **Example**: `philip`
-    - **repo**
-      - **Type**: `string`
-      - **Description**: The repository hosting the user's dotfiles.
-      - **Example**: `git@github.com:cubt85iz/dotfiles.git`
-  - **Required**: `["user", "repo"]`
-
 #### `github_releases`
 
 - **Type**: `array`
@@ -125,6 +108,5 @@ The following properties are required in the JSON object:
 - `base_image`
 - `base_image_tag`
 - `description`
-- `dotfiles`
 - `github_releases`
 - `packages`

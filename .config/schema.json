@@ -17,26 +17,6 @@
       "description": "A brief description of the image and its purpose.",
       "example": "A desktop image derived from Fedora Silverblue with the latest Nvidia drivers."
     },
-    "dotfiles": {
-      "type": "array",
-      "description": "A list of repositories containing user dotfiles.",
-      "items": {
-        "type": "object",
-        "properties": {
-          "user": {
-            "type": "string",
-            "description": "The user for the dotfiles.",
-            "example": "philip"
-          },
-          "repo": {
-            "type": "string",
-            "description": "The repository hosting the user's dotfiles.",
-            "example": "git@github.com:cubt85iz/dotfiles.git"
-          }
-        },
-        "required": ["user", "repo"]
-      }
-    },
     "github_releases": {
       "type": "array",
       "description": "A list of GitHub releases to install in the container image.",
@@ -109,5 +89,5 @@
       "required": ["install", "remove"]
     }
   },
-  "required": ["base_image", "base_image_tag", "description", "dotfiles", "github_releases", "packages"]
+  "required": ["base_image", "base_image_tag", "description", "github_releases", "packages"]
 }
