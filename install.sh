@@ -3,7 +3,7 @@
 set -euxo pipefail
 
 install_github_releases() {
-  for RELEASE in $(jq -c '.github_releases[]' "$SCRIPT_DIR/config/config.json")
+  for RELEASE in $(jq -c '.github_releases[]' "$SCRIPT_DIR/../config/config.json")
   do
     PROJECT=$(echo "$RELEASE" | jq -r '.project')
     ARCH=$(echo "$RELEASE" | jq -r '.arch')
@@ -13,7 +13,7 @@ install_github_releases() {
 
 install_packages() {
   # Get list of packages for installation.
-  readarray -t PKGLIST < <(jq -r '.packages.install[]' "$SCRIPT_DIR/config/config.json")
+  readarray -t PKGLIST < <(jq -r '.packages.install[]' "$SCRIPT_DIR/../config/config.json")
 
   # Install packages.
   if [ ${#PKGLIST[@]} -gt 0 ]; then
@@ -23,7 +23,7 @@ install_packages() {
 
 remove_packages() {
   # Get list of objects containing packages for removal/replacement.
-  readarray -t PKGLIST < <(jq -c '.packages.remove[]' "$SCRIPT_DIR/config/config.json")
+  readarray -t PKGLIST < <(jq -c '.packages.remove[]' "$SCRIPT_DIR/../config/config.json")
 
   if [ ${#PKGLIST[@]} -gt 0 ]; then
     for PKG in "${PKGLIST[@]}"; do
@@ -56,8 +56,8 @@ enable_repo() {
 }
 
 install_repos() {
-  if [ "$(jq -r ".repos" "$SCRIPT_DIR/config/config.json")" != "null" ]; then
-    for REPO in $(jq -r ".repos[]" "$SCRIPT_DIR/config/config.json"); do
+  if [ "$(jq -r ".repos" "$SCRIPT_DIR/../config/config.json")" != "null" ]; then
+    for REPO in $(jq -r ".repos[]" "$SCRIPT_DIR/../config/config.json"); do
       REPO_NAME=${REPO##*/}
       REPO_TYPE=${REPO_NAME##*.}
       if [ "$REPO_TYPE" == "rpm" ]; then

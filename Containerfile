@@ -12,4 +12,4 @@ COPY $ROOT/etc/ /etc/
 COPY $ROOT/usr/ /usr/
 
 RUN --mount=type=bind,from=base,src=/,dst=/base,Z \
-    /base/install.sh
+    /base/$ROOT/install.sh
