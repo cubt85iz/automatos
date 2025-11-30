@@ -7,7 +7,7 @@ install_github_releases() {
   do
     PROJECT=$(echo "$RELEASE" | jq -r '.project')
     ARCH=$(echo "$RELEASE" | jq -r '.arch')
-    ./github-release-install.sh "$PROJECT" "$ARCH"
+    "$SCRIPT_DIR/github-release-install.sh" "$PROJECT" "$ARCH"
   done
 }
 
