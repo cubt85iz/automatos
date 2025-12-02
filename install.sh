@@ -18,6 +18,7 @@ install_packages() {
   # Install packages.
   if [ ${#PKGLIST[@]} -gt 0 ]; then
     dnf --assumeyes install --setopt=install_weak_deps=False  "${PKGLIST[@]}"
+    dnf --assumeyes clean all
   fi
 }
 
